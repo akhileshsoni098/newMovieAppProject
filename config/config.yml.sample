@@ -1,0 +1,25 @@
+# Database Config
+db:
+  development:
+    host: 
+    username: 
+    password: 
+
+  production:
+    host: 
+    username: 
+    password: 
+
+# App Config
+app:
+  development:
+    protocol: http
+    host: localhost
+    port: 3000
+    api_prefix: /api
+
+  production:
+    protocol: http
+    host: localhost
+    port: 3000
+    api_prefix: /api

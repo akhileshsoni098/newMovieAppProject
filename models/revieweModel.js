@@ -1,0 +1,28 @@
+const mongoose = require("mongoose")
+
+const ObjectId = mongoose.Schema.Types.ObjectId
+const reviewSchema = mongoose.Schema({
+
+// jb user kuch dekh chuka hoga then review and rate krega ....
+
+
+watchListId:{
+    type:ObjectId,
+    ref:"WatchList"
+},
+review:{
+    Type:String,
+    default:false
+},
+rating:{
+    Type:Number,
+    default:0
+}
+
+// by this i can access movie what is watched by user and user data ...
+
+
+})
+module.exports = mongoose.model("Review", reviewSchema)
+
+
