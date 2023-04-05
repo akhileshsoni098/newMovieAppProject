@@ -32,6 +32,6 @@ email:{
 
 }, {timeStamp:true})
 
-module.exports = mongoose.model("Admin", UserSchema)
+
 
 

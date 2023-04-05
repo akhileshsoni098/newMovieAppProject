@@ -5,20 +5,19 @@ const { appConfig } = require("./config/config");
 
 const connectDatabase = require("./config/database");
 
-const userRoute = require("./routes/api/user");
+const route = require("./routes/api/route");
 
-const app = express();
+const app = express(); 
 
 // Connect to the database
-connectDatabase();
+connectDatabase(); 
 
 // Init Middleware
 app.use(express.json({ extended: false }));
+ 
 
-// Server Check
-app.get("/", (req, res) => res.send("API Running"));
-
-app.use("/api/users", userRoute);
-
+app.use("/", route);
+ 
 const PORT = appConfig.port;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+  

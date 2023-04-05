@@ -9,12 +9,13 @@ title:{
 },
 movieType:{
     type:String,
+    required:true,
     enum:["Action", "Comedy" ,"Drama","Fantasy","Horror","Mystery","Romance","Thriller"],
-required:true
+
 },
-adminId:{
+adminId:{       // going save whoes id who is registerd as a admin
     type:ObjectId,
-    ref:"Admin"
+    ref:"MoviUser"
 },
 
 releasedAt:{
