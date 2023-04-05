@@ -5,19 +5,25 @@ const reviewSchema = mongoose.Schema({
 
 // jb user kuch dekh chuka hoga then review and rate krega ....
 
-
-watchListId:{
+userID:{
     type:ObjectId,
-    ref:"WatchList"
+    ref:"MoviUser"
 },
-review:{
-    Type:String,
-    default:false
+
+movieID:{
+    type:ObjectId,
+    ref:"Movie"
 },
-rating:{
-    Type:Number,
-    default:0
-}
+review: {
+    type: String,
+    default: null
+  },
+rating: {
+    type: Number,
+    default: 0
+  }
+
+ 
 
 // by this i can access movie what is watched by user and user data ...
 

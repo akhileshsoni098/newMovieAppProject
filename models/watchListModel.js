@@ -4,16 +4,18 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 
 const WatchList = mongoose.Schema ({
 
-userId:{
-    Type:ObjectId,
+userID:{
+    type:ObjectId,
     ref:"MoviUser"
 },
 
-movieId:{
+movieID:{
     type:ObjectId,
     ref:"Movie"
-}
+},
+
+// direct delete (hard delete)
 
 })
 
-module.exports = mongoose.model("WatchList", reviewSchema)
+module.exports = mongoose.model("WatchList", WatchList)
