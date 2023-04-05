@@ -9,7 +9,7 @@ userID:{
     ref:"MoviUser"
 },
 
-movieID:{
+movies:{
     type:ObjectId,
     ref:"Movie"
 },
