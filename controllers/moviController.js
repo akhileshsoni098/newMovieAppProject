@@ -87,12 +87,16 @@ let {userID , movieID} = data
    movieID = data.movieID = movieId
   const getMovie = await movieModel.findById(movieId)
 
+// db call to check if same movie is already (have to check) reviwed or already added 
+// in the watchList than not goin to save again 
+
   await watchlistM.create(data)
 
   await reviewModel.create(data) 
 const revieweDetails = await reviewModel.find({movieID:movieId})
 
 const details = {
+  
 movie: getMovie,
 
 review:revieweDetails
@@ -101,6 +105,9 @@ review:revieweDetails
 return res.status(200).send({status:false , data:details})
 
 }
+
+
+
 
 
 const deleteMovie = async function(req,res){  // admin can be moreThan one so i have to authorise the user who
