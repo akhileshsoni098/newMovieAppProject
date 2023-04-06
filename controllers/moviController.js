@@ -11,6 +11,7 @@ const watchListModel = require("../models/watchListModel");
 
 // ================================= save movie ==================================
 
+
 const OMDB_API_KEY = "8cb4187"; // http://www.omdbapi.com/?i=tt3896198&apikey=8cb4187
 
 const saveMovie = async function (req, res) {
@@ -68,12 +69,12 @@ const getMovie = async function(req,res){
 const data = req.query
 const {title,year,type } = data
 if(!title || !year || !type){
-  const movies = await movieModel.find()
+  const movies = await movieModel.find({isDeleted:false})
   return res.status(200).send({status:true , data:movies})
 }
  
 if(title || year || type){
-const Query = await movieModel.find({title:title, year:year , type:type})
+const Query = await movieModel.find({title:title, year:year , type:type},{isDeleted:false})
 
 return res.status(200).send({status:true , data:Query})
 
@@ -93,6 +94,7 @@ let {userID , movies} = data
   userID = data.userID = userId
    movies = data.movies = movieId
   const getMovie = await movieModel.findById(movieId)
+  if(getMovie.isDeleted==false){return res.status(400).send({status:false , message:"this movie does not exist"})}
  
 const checkWatchList = await watchListModel.findOne({userID:userId, movies:movieId})
 if(!checkWatchList){

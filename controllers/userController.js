@@ -54,6 +54,25 @@ res.status(200).send({status:true , message:"successfully logIn", token:token})
 }
 }
 
+
+
+//=================== get user ==============================
+
+
+const userDetails = async function(req,res){
+
+  const userId = req.params.userId
+
+  const details = await userModel.findOne({_id:userId , isDeleted:false})
+
+res.status(200).send({status:false , data:details})
+
+}
+
+
+
+
+
 // ==================== update user =============================
 
 const updateUser = async function (req, res) {
@@ -71,7 +90,7 @@ const updateUser = async function (req, res) {
         .send({ status: false, message: "this email is already exist" });
     }
 
-    let saveUser = await userModel.findByIdAndUpdate({_id:userId},
+    let saveUser = await userModel.findByIdAndUpdate({_id:userId,isDeleted:false},
       {$set:{ fname:data.fname ,lname:data.lname, email:data.email, password:data.password }},{new:true})
 
     return res.status(201).send({ status: true, data: saveUser });
@@ -90,4 +109,4 @@ const updateUser = async function (req, res) {
 
 
 
-module.exports = {userData, logIn, updateUser} 
+module.exports = {userData, logIn,userDetails, updateUser} 
