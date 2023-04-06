@@ -5,36 +5,38 @@ const movieController = require("../../controllers/moviController")
 const watchlistContro = require("../../controllers/watchListController")
 const reviewContro = require("../../controllers/revieweController")
 
+const auth = require("../../middi/auth")
+
 // user and admin both 
 router.post("/registration" , UserController.userData)
 router.post("/logInUser", UserController.logIn)
-router.get("/getUser/:userId", UserController.userDetails)
-router.put("/updateUser/:userId", UserController.updateUser)
-
+router.get("/getUser", auth.authentication , UserController.userDetails)
+router.put("/updateUser", auth.authentication , UserController.updateUser)
+router.delete("/deleteUser", auth.authentication, UserController.deleteUser)
 // delete user # have to create 
 
 // movie 
 
-router.post("/saveMovi/:adminId", movieController.saveMovie )
-router.get("/getMovie/:userId", movieController.getMovie )
-router.get("/getById/:userId/:movieId", movieController.getMovieById )
-router.delete("/deleteMovie/:userId/:movieId",movieController.deleteMovie )
+router.post("/saveMovie", auth.authentication , movieController.saveMovie )
+router.get("/getMovie", auth.authentication , movieController.getMovie )
+router.get("/getById/:movieId",auth.authentication , movieController.getMovieById )
+router.delete("/deleteMovie/:movieId", auth.authentication ,  movieController.deleteMovie )
 
 
 // watchList 
-
-router.get("/getWatchList/:userId", watchlistContro.watchlistDetails )
-router.delete("/deleteMovieWatchList/:userId/:movieId", watchlistContro.delParticular )
-router.delete("/clearAllWatchList/:userId", watchlistContro.clearWatchList )
+router.post("/addWatchList/:movieId", auth.authentication , watchlistContro.addToWatchList)
+router.get("/getWatchList",auth.authentication , watchlistContro.watchlistDetails )
+router.delete("/deleteMovieWatchList/:movieId", auth.authentication , watchlistContro.delParticular )
+router.delete("/clearAllWatchList", auth.authentication , watchlistContro.clearWatchList )
 
 
 //review 
-router.post("/review/:userId", reviewContro.reviewdata)
-router.get("/getParticular/:userId", reviewContro.getParticular)
-router.get("/getAllReview/:userId", reviewContro.getAllReviews)
-router.put("/reviewUpdate/:userId", reviewContro.updateReview)
-router.delete("/particularReviewDelete/:userId", reviewContro.DeleteParticular)
-router.delete("/allReviewDelete/:userId", reviewContro.DeleteAll)
+router.post("/review/:movieId", auth.authentication ,reviewContro.reviewdata)
+router.get("/getParticular/:movieId",auth.authentication , reviewContro.getParticular)
+router.get("/getAllReview", auth.authentication , reviewContro.getAllReviews)
+router.put("/reviewUpdate/:movieId", auth.authentication , reviewContro.updateReview)
+router.delete("/particularReviewDelete/:movieId",auth.authentication , reviewContro.DeleteParticular)
+router.delete("/allReviewDelete", auth.authentication , reviewContro.DeleteAll)
 
 
 //test application

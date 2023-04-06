@@ -3,6 +3,9 @@ const jwt = require("jsonwebtoken")
 
 
 const userModel = require("../models/userModel");
+const watchListModel = require("../models/watchListModel");
+const revieweModel = require("../models/revieweModel");
+const movieModel = require("../models/movieModel");
 
 // ================== user registration============================
 
@@ -46,7 +49,7 @@ const logIn = async function(req, res){
       .send({ status: false, message: "this email is not exist" });
   }
 
-let token = jwt.sign({userId:checkEmail._id},"secreteKey")
+let token = jwt.sign({userId:checkEmail._id},"SecreateKey")
 
 res.status(200).send({status:true , message:"successfully logIn", token:token})
 } catch (err) {
@@ -61,7 +64,7 @@ res.status(200).send({status:true , message:"successfully logIn", token:token})
 
 const userDetails = async function(req,res){
 
-  const userId = req.params.userId
+      let userId =  req.userId 
 
   const details = await userModel.findOne({_id:userId , isDeleted:false})
 
@@ -77,7 +80,8 @@ res.status(200).send({status:false , data:details})
 
 const updateUser = async function (req, res) {
   try {
-    const userId = req.params.userId
+    let userId =  req.userId 
+
     const data = req.body;
 
     const { fname, lname, email, password } = data;
@@ -103,10 +107,36 @@ const updateUser = async function (req, res) {
 
 //=========================== delete User ============================
 
+const deleteUser = async function(req,res){
 
-// if user delete his account then watchlis of this particular user and rating and review of this user also be remove ...
+  let userId = req.userId
+if(!userId){return res.status(401).send({status:false , message:" log in again "})}
+
+let user = await userModel.findById(userId)
+if(user.isDeleted == true){return res.status(400).send({status:false, message:"user not found"})}
+
+if(!user){return res.status(404).send({status:false, message:"user not found"})}
+
+if(user.role == "admin"){
+  await watchListModel.deleteMany({userID:userId})
+  await revieweModel.deleteMany({userID:userId})
+  await movieModel.updateMany({userID:userId, isDeleted:false},{isDeleted:true},{new:true})
+}
+if(user.role == "user"){
+
+  await watchListModel.deleteMany({userID:userId})
+  await revieweModel.deleteMany({userID:userId})
+}
+
+await userModel.findOneAndUpdate({_id:userId,isDeleted:false},{$set: {isDeleted:true}},{new:true})
+
+res.status(200).send({status:true , message:"Deleted successfully"})
+
+}
 
 
 
 
-module.exports = {userData, logIn,userDetails, updateUser} 
+
+
+module.exports = {userData, logIn,userDetails, updateUser,deleteUser} 
