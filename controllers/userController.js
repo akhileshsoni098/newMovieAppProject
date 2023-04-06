@@ -1,142 +1,470 @@
 const mongoose = require("mongoose");
-const jwt = require("jsonwebtoken")
-
+const jwt = require("jsonwebtoken");
+const validation = require("../validattion/validation");
 
 const userModel = require("../models/userModel");
 const watchListModel = require("../models/watchListModel");
 const revieweModel = require("../models/revieweModel");
 const movieModel = require("../models/movieModel");
 
-// ================== user registration============================
-
+// ================== user registration ============================
 
 const userData = async function (req, res) {
   try {
-    const data = req.body;
+    let data = req.body;
 
-    const { fname, lname, email, password, role } = data;
+    let { fname, lname, email, password, role } = data;
+    //===============================================================
+    if (Object.keys(data).length == 0) {
+      return res
+        .status(400)
+        .send({ status: false, message: "Provide required field to register" });
+    }
 
-    const checkEmail = await userModel.findOne({email: email});
+    //============ fname====================
+
+    if (!fname) {
+      return res
+        .status(400)
+        .send({ status: false, message: "first name is mandatory" });
+    }
+
+    if (typeof fname != "string") {
+      return res
+        .status(400)
+        .send({ status: false, message: "first name should be in string" });
+    }
+
+    fname = data.fname = fname.trim();
+
+    if (fname == "") {
+      return res
+        .status(400)
+        .send({ status: false, message: "Please Enter first name value" });
+    }
+    // regex
+    if (!validation.validateName(fname)) {
+      return res
+        .status(400)
+        .send({ status: false, message: "please provide valid first name " });
+    }
+    // ========================= lname ========================
+
+    if (!lname) {
+      return res
+        .status(400)
+        .send({ status: false, message: "last name is mandatory" });
+    }
+
+    if (typeof lname != "string") {
+      return res
+        .status(400)
+        .send({ status: false, message: "last name should be in string" });
+    }
+
+    lname = data.lname = lname.trim();
+    if (lname == "") {
+      return res
+        .status(400)
+        .send({ status: false, message: "Please enter last name value" });
+    }
+    // regex
+    if (!validation.validateName(lname)) {
+      return res
+        .status(400)
+        .send({ status: false, message: "Please provide valid last name " });
+    }
+    //================================ email ===================
+
+    if (!email) {
+      return res
+        .status(400)
+        .send({ status: false, message: "email is mandatory" });
+    }
+
+    if (typeof email != "string") {
+      return res
+        .status(400)
+        .send({ status: false, message: "email id  should be in string" });
+    }
+
+    email = data.email = email.trim().toLowerCase();
+    if (email == "") {
+      return res
+        .status(400)
+        .send({ status: false, message: "Please enter email value" });
+    }
+
+    //regex
+    if (!validation.validateEmail(email)) {
+      return res
+        .status(400)
+        .send({ status: false, message: "Please provide valid email id" });
+    }
+    const checkEmail = await userModel.findOne({ email: email });
 
     if (checkEmail) {
       return res
         .status(400)
-        .send({ status: false, message: "this email is already exist" });
+        .send({ status: false, message: "This email is already exist" });
     }
 
-    let saveUser = await userModel.create(data);
- 
-    return res.status(201).send({ status: true, data: saveUser });
+    //========= password ===========================================================
 
+    if (!password) {
+      return res
+        .status(400)
+        .send({ status: false, message: "password is mandatory" });
+    }
+    if (typeof password != "string") {
+      return res
+        .status(400)
+        .send({ status: false, message: "please provide password in string " });
+    }
+    password = data.password = password.trim();
+    if (password == "") {
+      return res
+        .status(400)
+        .send({ status: false, message: "Please provide password value" });
+    }
+
+    //regex password
+    if (!validation.validatePassword(password)) {
+      return res
+        .status(400)
+        .send({
+          status: false,
+          message:
+            "8-15 characters, one lowercase letter, one number and maybe one UpperCase & one special character",
+        });
+    }
+    // ==================== role ============================
+
+    if (role) {
+      if (typeof role != "string") {
+        return res
+          .status(400)
+          .send({ status: false, message: `Please Provide your role` });
+      }
+      role = data.role = data.role.trim();
+
+      if (
+        role == null ||
+        role == undefined ||
+        Object.values(role).length == 0
+      ) {
+        return res
+          .status(400)
+          .send({ status: false, message: ` please Provide valid role` });
+      }
+      if (!["user", "admin"].includes(role)) {
+        return res
+          .status(400)
+          .send({
+            status: false,
+            message: " You may Register as a User or Admin",
+          });
+      }
+    }
+
+    //==============================================================
+
+    let saveUser = await userModel.create(data);
+
+    return res.status(201).send({ status: true, data: saveUser });
   } catch (err) {
     res.status(500).send({ status: false, message: err.message });
   }
 };
 
-// ======================== userLogin  ===========================
+// ======================== userLogin  ======================================================================
 
-const logIn = async function(req, res){
-  try{
-  const data = req.body
+const logIn = async function (req, res) {
+  try {
+    let data = req.body;
 
-  const {email, password} = data
+    let { email, password } = data;
+    //===================================================
 
-  const checkEmail = await userModel.findOne({email: email});
+    if (!email) {
+      return res
+        .status(400)
+        .send({ status: false, message: "email is mandatory" });
+    }
 
-  if (!checkEmail) {
-    return res
-      .status(400)
-      .send({ status: false, message: "this email is not exist" });
+    if (typeof email != "string") {
+      return res
+        .status(400)
+        .send({ status: false, message: "email id  should be in string" });
+    }
+
+    email = data.email = email.trim().toLowerCase();
+    if (email == "") {
+      return res
+        .status(400)
+        .send({ status: false, message: "Please enter email value" });
+    }
+
+    //regex
+    if (!validation.validateEmail(email)) {
+      return res
+        .status(400)
+        .send({ status: false, message: "Please provide valid email id" });
+    }
+
+    //========= password ===========================================================
+
+    if (!password) {
+      return res
+        .status(400)
+        .send({ status: false, message: "password is mandatory" });
+    }
+    if (typeof password != "string") {
+      return res
+        .status(400)
+        .send({ status: false, message: "please provide password in string " });
+    }
+    password = data.password = password.trim();
+    if (password == "") {
+      return res
+        .status(400)
+        .send({ status: false, message: "Please provide password value" });
+    }
+
+    //regex password
+    if (!validation.validatePassword(password)) {
+      return res
+        .status(400)
+        .send({
+          status: false,
+          message:
+            "8-15 characters, one lowercase letter, one number and maybe one UpperCase & one special character",
+        });
+    }
+
+    //=============================================================
+    const checkEmail = await userModel.findOne({
+      email: email,
+      password: password,
+    });
+
+    if (!checkEmail) {
+      return res
+        .status(400)
+        .send({ status: false, message: " Email or Password is incorrect !" });
+    }
+
+    let token = jwt.sign({ userId: checkEmail._id }, "SecreateKey");
+
+    res
+      .status(200)
+      .send({ status: true, message: "successfully logIn", token: token });
+  } catch (err) {
+    res.status(500).send({ status: false, message: err.message });
   }
-
-let token = jwt.sign({userId:checkEmail._id},"SecreateKey")
-
-res.status(200).send({status:true , message:"successfully logIn", token:token})
-} catch (err) {
-  res.status(500).send({ status: false, message: err.message });
-}
-}
-
-
+};
 
 //=================== get user ==============================
 
+const userDetails = async function (req, res) {
+  try {
+    let userId = req.userId;
+    if (!mongoose.isValidObjectId(userId) || !userId) {
+      return res.status(400).send({ status: false, message: " Invalid Entry" });
+    }
 
-const userDetails = async function(req,res){
+    const details = await userModel.findOne({ _id: userId, isDeleted: false });
+    if (!details) {
+      return res
+        .status(404)
+        .send({ status: false, message: " data not found" });
+    }
 
-      let userId =  req.userId 
-
-  const details = await userModel.findOne({_id:userId , isDeleted:false})
-
-res.status(200).send({status:false , data:details})
-
-}
-
-
-
-
+    res.status(200).send({ status: true, data: details });
+  } catch (err) {
+    res.status(500).send({ status: false, message: err.message });
+  }
+};
 
 // ==================== update user =============================
+// have to test
 
 const updateUser = async function (req, res) {
   try {
-    let userId =  req.userId 
+    let userId = req.userId;
 
     const data = req.body;
 
     const { fname, lname, email, password } = data;
 
-    const checkEmail = await userModel.findOne({email: email});
+    //====================================================================
 
-    if (checkEmail) {
-      return res
-        .status(400)
-        .send({ status: false, message: "this email is already exist" });
+    if (fname) {
+      if (typeof fname != "string") {
+        return res
+          .status(400)
+          .send({ status: false, message: "first name should be in string" });
+      }
+
+      fname = data.fname = fname.trim();
+
+      if (fname == "") {
+        return res
+          .status(400)
+          .send({ status: false, message: "Please Enter first name value" });
+      }
+      // regex
+      if (!validation.validateName(fname)) {
+        return res
+          .status(400)
+          .send({ status: false, message: "please provide valid first name " });
+      }
+    }
+    // ========================= lname ========================
+
+    if (lname) {
+      if (typeof lname != "string") {
+        return res
+          .status(400)
+          .send({ status: false, message: "last name should be in string" });
+      }
+
+      lname = data.lname = lname.trim();
+      if (lname == "") {
+        return res
+          .status(400)
+          .send({ status: false, message: "Please enter last name value" });
+      }
+      // regex
+      if (!validation.validateName(lname)) {
+        return res
+          .status(400)
+          .send({ status: false, message: "Please provide valid last name " });
+      }
+    }
+    //================================ email ===================
+
+    if (email) {
+      if (typeof email != "string") {
+        return res
+          .status(400)
+          .send({ status: false, message: "email id  should be in string" });
+      }
+
+      email = data.email = email.trim().toLowerCase();
+      if (email == "") {
+        return res
+          .status(400)
+          .send({ status: false, message: "Please enter email value" });
+      }
+
+      //regex
+      if (!validation.validateEmail(email)) {
+        return res
+          .status(400)
+          .send({ status: false, message: "Please provide valid email id" });
+      }
+      const checkEmail = await userModel.findOne({ email: email });
+
+      if (checkEmail) {
+        return res
+          .status(400)
+          .send({ status: false, message: "This email is already exist" });
+      }
     }
 
-    let saveUser = await userModel.findByIdAndUpdate({_id:userId,isDeleted:false},
-      {$set:{ fname:data.fname ,lname:data.lname, email:data.email, password:data.password }},{new:true})
+    //========= password ===========================================================
+
+    if (password) {
+      if (typeof password != "string") {
+        return res
+          .status(400)
+          .send({
+            status: false,
+            message: "please provide password in string ",
+          });
+      }
+      password = data.password = password.trim();
+      if (password == "") {
+        return res
+          .status(400)
+          .send({ status: false, message: "Please provide password value" });
+      }
+
+      //regex password
+      if (!validation.validatePassword(password)) {
+        return res
+          .status(400)
+          .send({
+            status: false,
+            message:
+              "8-15 characters, one lowercase letter, one number and maybe one UpperCase & one special character",
+          });
+      }
+    }
+
+    //========================================================================
+
+    let saveUser = await userModel.findByIdAndUpdate(
+      { _id: userId, isDeleted: false },
+      {
+        $set: {
+          fname: data.fname,
+          lname: data.lname,
+          email: data.email,
+          password: data.password,
+        },
+      },
+      { new: true }
+    );
 
     return res.status(201).send({ status: true, data: saveUser });
-
   } catch (err) {
     res.status(500).send({ status: false, message: err.message });
   }
 };
 
-
 //=========================== delete User ============================
 
-const deleteUser = async function(req,res){
+const deleteUser = async function (req, res) {
+  let userId = req.userId;
+  if (!userId) {
+    return res.status(401).send({ status: false, message: " log in again " });
+  }
+  if (!mongoose.isValidObjectId(userId) || !userId) {
+    return res.status(400).send({ status: false, message: " Invalid Entry" });
+  }
 
-  let userId = req.userId
-if(!userId){return res.status(401).send({status:false , message:" log in again "})}
+  let user = await userModel.findById(userId);
+  if (user.isDeleted == true) {
+    return res.status(400).send({ status: false, message: "user not found" });
+  }
 
-let user = await userModel.findById(userId)
-if(user.isDeleted == true){return res.status(400).send({status:false, message:"user not found"})}
+  if (!user) {
+    return res.status(404).send({ status: false, message: "user not found" });
+  }
 
-if(!user){return res.status(404).send({status:false, message:"user not found"})}
+  if (user.role == "admin") {
+    await watchListModel.deleteMany({ userID: userId });
+    await revieweModel.deleteMany({ userID: userId });
+    await movieModel.updateMany(
+      { userID: userId, isDeleted: false },
+      { isDeleted: true },
+      { new: true }
+    );
+  }
+  if (user.role == "user") {
+    await watchListModel.deleteMany({ userID: userId });
+    await revieweModel.deleteMany({ userID: userId });
+  }
 
-if(user.role == "admin"){
-  await watchListModel.deleteMany({userID:userId})
-  await revieweModel.deleteMany({userID:userId})
-  await movieModel.updateMany({userID:userId, isDeleted:false},{isDeleted:true},{new:true})
-}
-if(user.role == "user"){
+  await userModel.findOneAndUpdate(
+    { _id: userId, isDeleted: false },
+    { $set: { isDeleted: true } },
+    { new: true }
+  );
 
-  await watchListModel.deleteMany({userID:userId})
-  await revieweModel.deleteMany({userID:userId})
-}
+  res.status(200).send({ status: true, message: "Deleted successfully" });
+};
 
-await userModel.findOneAndUpdate({_id:userId,isDeleted:false},{$set: {isDeleted:true}},{new:true})
-
-res.status(200).send({status:true , message:"Deleted successfully"})
-
-}
-
-
-
-
-
-
-module.exports = {userData, logIn,userDetails, updateUser,deleteUser} 
+module.exports = { userData, logIn, userDetails, updateUser, deleteUser };

@@ -15,7 +15,8 @@
     "js-yaml": "^4.1.0",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.0.3",
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "validator": "^13.9.0"
   },
   "keywords": [],
   "author": "",
