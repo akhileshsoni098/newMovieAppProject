@@ -101,7 +101,7 @@ const updateUser = async function (req, res) {
 };
 
 
-//===================== delete User ============================
+//=========================== delete User ============================
 
 
 // if user delete his account then watchlis of this particular user and rating and review of this user also be remove ...

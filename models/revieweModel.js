@@ -12,6 +12,7 @@ userID:{
 
 movies:{
     type:ObjectId,
+    required:true,
     ref:"Movie"
 },
 review: {

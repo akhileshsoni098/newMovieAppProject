@@ -1,5 +1,5 @@
 
-const movieModel = require("../models/movieModel");
+
 const moviModel = require("../models/movieModel");
 const userModel = require("../models/userModel");
 const watchListModel = require("../models/watchListModel");

@@ -1,7 +1,5 @@
 const movieModel = require("../models/movieModel");
-const moviModel = require("../models/movieModel");
 const userModel = require("../models/userModel");
-
 const reviewModel = require("../models/revieweModel")
 
 
@@ -46,7 +44,7 @@ const saveMovie = async function (req, res) {
       adminID:adminId
     };
 console.log(movie)
-    const moviData = await moviModel.create(movie);
+    const moviData = await movieModel.create(movie);
     res
       .status(201)
       .send({
@@ -100,8 +98,7 @@ const checkWatchList = await watchListModel.findOne({userID:userId, movies:movie
 if(!checkWatchList){
   // here i am adding movies in watchList for each different user 
   await watchListModel.create(data)
-  // doubt in this part that same time i should to refer userId and movie id to review collection or not
-  await reviewModel.create(data) 
+  
 }
 const revieweDetails = await reviewModel.find({movies:movieId})
 
