@@ -1,21 +1,19 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
-const ObjectId = mongoose.Schema.Types.ObjectId
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
-const WatchList = mongoose.Schema ({
+const WatchList = mongoose.Schema({
+  userID: {
+    type: ObjectId,
+    ref: "MoviUser",
+  },
 
-userID:{
-    type:ObjectId,
-    ref:"MoviUser"
-},
+  movies: {
+    type: ObjectId,
+    ref: "Movie",
+  },
 
-movies:{
-    type:ObjectId,
-    ref:"Movie"
-},
+  // direct delete (hard delete)
+});
 
-// direct delete (hard delete)
-
-})
-
-module.exports = mongoose.model("WatchList", WatchList)
+module.exports = mongoose.model("WatchList", WatchList);

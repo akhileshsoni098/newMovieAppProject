@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const validation = require("../validattion/validation");
-const bcrypt = require('bcrypt')
+const bcrypt = require("bcrypt");
 
 const userModel = require("../models/userModel");
 const watchListModel = require("../models/watchListModel");
@@ -131,13 +131,11 @@ const userData = async function (req, res) {
 
     //regex password
     if (!validation.validatePassword(password)) {
-      return res
-        .status(400)
-        .send({
-          status: false,
-          message:
-            "8-15 characters, one lowercase letter, one number and maybe one UpperCase & one special character",
-        });
+      return res.status(400).send({
+        status: false,
+        message:
+          "8-15 characters, one lowercase letter, one number and maybe one UpperCase & one special character",
+      });
     }
 
     let hashing = bcrypt.hashSync(password, 10);
@@ -163,12 +161,10 @@ const userData = async function (req, res) {
           .send({ status: false, message: ` please Provide valid role` });
       }
       if (!["user", "admin"].includes(role)) {
-        return res
-          .status(400)
-          .send({
-            status: false,
-            message: " You may Register as a User or Admin",
-          });
+        return res.status(400).send({
+          status: false,
+          message: " You may Register as a User or Admin",
+        });
       }
     }
 
@@ -235,37 +231,40 @@ const logIn = async function (req, res) {
         .status(400)
         .send({ status: false, message: "Please provide password value" });
     }
-    
-
-
 
     //regex password
     if (!validation.validatePassword(password)) {
-      return res
-        .status(400)
-        .send({
-          status: false,
-          message:
-            "8-15 characters, one lowercase letter, one number and maybe one UpperCase & one special character",
-        });
+      return res.status(400).send({
+        status: false,
+        message:
+          "8-15 characters, one lowercase letter, one number and maybe one UpperCase & one special character",
+      });
     }
 
     //=============================================================
 
+    let isUserExist = await userModel.findOne({ email: email });
 
-   let isUserExist = await userModel.findOne({ email: email });
-   
-    if (!isUserExist)
-   { return res.status(404).send({ status: false, message: "No user found with given Email" })}
+    if (!isUserExist) {
+      return res
+        .status(404)
+        .send({ status: false, message: "No user found with given Email" });
+    }
 
     //Decrypt
     let passwordCompare = await bcrypt.compare(password, isUserExist.password);
 
-    if (!passwordCompare) {return res.status(400).send({ status: false, message: "Please enter valid password" })}
+    if (!passwordCompare) {
+      return res
+        .status(400)
+        .send({ status: false, message: "Please enter valid password" });
+    }
 
-
-if(isUserExist.isDeleted == true){return res.status(400).send({status:false , message:"User does not Exist"})}
-
+    if (isUserExist.isDeleted == true) {
+      return res
+        .status(400)
+        .send({ status: false, message: "User does not Exist" });
+    }
 
     let token = jwt.sign({ userId: isUserExist._id }, "SecreateKey");
 
@@ -302,16 +301,13 @@ const userDetails = async function (req, res) {
 // ==================== update user =============================
 // have to test
 
-
-
-
 const updateUser = async function (req, res) {
   try {
     let userId = req.userId;
 
-   let data = req.body;
+    let data = req.body;
 
-let { fname, lname, email, password } = data;
+    let { fname, lname, email, password } = data;
 
     //====================================================================
 
@@ -393,12 +389,10 @@ let { fname, lname, email, password } = data;
 
     if (password) {
       if (typeof password != "string") {
-        return res
-          .status(400)
-          .send({
-            status: false,
-            message: "please provide password in string ",
-          });
+        return res.status(400).send({
+          status: false,
+          message: "please provide password in string ",
+        });
       }
       password = data.password = password.trim();
       if (password == "") {
@@ -409,19 +403,16 @@ let { fname, lname, email, password } = data;
 
       //regex password
       if (!validation.validatePassword(password)) {
-        return res
-          .status(400)
-          .send({
-            status: false,
-            message:
-              "8-15 characters, one lowercase letter, one number and maybe one UpperCase & one special character",
-          });
+        return res.status(400).send({
+          status: false,
+          message:
+            "8-15 characters, one lowercase letter, one number and maybe one UpperCase & one special character",
+        });
       }
-// hashed password ....
+      // hashed password ....
 
       let hashing = bcrypt.hashSync(password, 10);
       data.password = hashing;
-
     }
 
     //========================================================================
