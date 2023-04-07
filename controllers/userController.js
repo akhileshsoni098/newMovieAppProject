@@ -110,7 +110,7 @@ const userData = async function (req, res) {
         .send({ status: false, message: "This email is already exist" });
     }
 
-    //========= password ===========================================================
+    //============= password ===========================================================
 
     if (!password) {
       return res
@@ -178,12 +178,13 @@ const userData = async function (req, res) {
   }
 };
 
-// ======================== userLogin  ======================================================================
+// ======================== userLogin  ==============================
 
 const logIn = async function (req, res) {
   try {
-    let data = req.body;
 
+    let data = req.body;
+if(Object.keys(data).length == 0 ){return res.status(400).send({status:false , message:"Provide your Email and Password to LogIn"})}
     let { email, password } = data;
     //===================================================
 
@@ -243,7 +244,7 @@ const logIn = async function (req, res) {
 
     //=============================================================
 
-    let isUserExist = await userModel.findOne({ email: email });
+    let isUserExist = await userModel.findOne({ email: email, isDeleted:false });
 
     if (!isUserExist) {
       return res
@@ -276,7 +277,7 @@ const logIn = async function (req, res) {
   }
 };
 
-//=================== get user ==============================
+//=================== get user ======================================
 
 const userDetails = async function (req, res) {
   try {
@@ -298,8 +299,7 @@ const userDetails = async function (req, res) {
   }
 };
 
-// ==================== update user =============================
-// have to test
+// ==================== update user ==================================
 
 const updateUser = async function (req, res) {
   try {

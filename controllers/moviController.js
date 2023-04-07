@@ -107,7 +107,7 @@ const saveMovie = async function (req, res) {
   }
 };
 
-//  ===================================== get movie by Query if no query showing all movie ===========================================
+//  ===================================== get all movies ===========================================
 
 const getMovie = async function (req, res) {
   try {
