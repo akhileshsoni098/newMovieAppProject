@@ -18,7 +18,8 @@ router.delete("/deleteUser", auth.authentication, UserController.deleteUser)
 // movie 
 
 router.post("/saveMovie", auth.authentication , movieController.saveMovie )
-router.get("/getMovie", auth.authentication , movieController.getMovie )
+router.get("/getAllMovies", auth.authentication , movieController.getMovie )
+router.get("/getFilterMovies", auth.authentication , movieController.queryMovie )
 router.get("/getById/:movieId",auth.authentication , movieController.getMovieById )
 router.delete("/deleteMovie/:movieId", auth.authentication ,  movieController.deleteMovie )
 

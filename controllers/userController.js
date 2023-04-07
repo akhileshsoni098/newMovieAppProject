@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const validation = require("../validattion/validation");
+const bcrypt = require('bcrypt')
 
 const userModel = require("../models/userModel");
 const watchListModel = require("../models/watchListModel");
@@ -138,6 +139,10 @@ const userData = async function (req, res) {
             "8-15 characters, one lowercase letter, one number and maybe one UpperCase & one special character",
         });
     }
+
+    let hashing = bcrypt.hashSync(password, 10);
+    data.password = hashing;
+
     // ==================== role ============================
 
     if (role) {
@@ -230,6 +235,9 @@ const logIn = async function (req, res) {
         .status(400)
         .send({ status: false, message: "Please provide password value" });
     }
+    
+
+
 
     //regex password
     if (!validation.validatePassword(password)) {
@@ -243,18 +251,23 @@ const logIn = async function (req, res) {
     }
 
     //=============================================================
-    const checkEmail = await userModel.findOne({
-      email: email,
-      password: password,
-    });
 
-    if (!checkEmail) {
-      return res
-        .status(400)
-        .send({ status: false, message: " Email or Password is incorrect !" });
-    }
 
-    let token = jwt.sign({ userId: checkEmail._id }, "SecreateKey");
+   let isUserExist = await userModel.findOne({ email: email });
+   
+    if (!isUserExist)
+   { return res.status(404).send({ status: false, message: "No user found with given Email" })}
+
+    //Decrypt
+    let passwordCompare = await bcrypt.compare(password, isUserExist.password);
+
+    if (!passwordCompare) {return res.status(400).send({ status: false, message: "Please enter valid password" })}
+
+
+if(isUserExist.isDeleted == true){return res.status(400).send({status:false , message:"User does not Exist"})}
+
+
+    let token = jwt.sign({ userId: isUserExist._id }, "SecreateKey");
 
     res
       .status(200)
@@ -289,13 +302,16 @@ const userDetails = async function (req, res) {
 // ==================== update user =============================
 // have to test
 
+
+
+
 const updateUser = async function (req, res) {
   try {
     let userId = req.userId;
 
-    const data = req.body;
+   let data = req.body;
 
-    const { fname, lname, email, password } = data;
+let { fname, lname, email, password } = data;
 
     //====================================================================
 
@@ -401,6 +417,11 @@ const updateUser = async function (req, res) {
               "8-15 characters, one lowercase letter, one number and maybe one UpperCase & one special character",
           });
       }
+// hashed password ....
+
+      let hashing = bcrypt.hashSync(password, 10);
+      data.password = hashing;
+
     }
 
     //========================================================================
