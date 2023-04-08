@@ -460,8 +460,8 @@ const deleteUser = async function (req, res) {
     await watchListModel.deleteMany({ userID: userId });
     await revieweModel.deleteMany({ userID: userId });
     await movieModel.updateMany(
-      { userID: userId, isDeleted: false },
-      { isDeleted: true },
+      { adminID: userId, isDeleted: false },
+    {$set:  { isDeleted: true }},
       { new: true }
     );
   }

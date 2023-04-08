@@ -46,7 +46,7 @@ router.delete(
 router.post(
   "/addWatchList/:movieId",
   auth.authentication,
-  watchlistContro.addToWatchList
+  watchlistContro.addToWatchList 
 );
 // ============= user/ admin can see all movies with is added in watchList =======================
 router.get(

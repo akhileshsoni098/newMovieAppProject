@@ -127,8 +127,8 @@ const getMovie = async function (req, res) {
 };
 
 //================================== get movie by filter  =============================================================
-
-const queryMovie = async function (req, res) {
+// need to rectify this error ... node:internal/errors:484
+const queryMovie = async function (req, res) { 
   try {
     let userId = req.userId;
 
@@ -141,7 +141,7 @@ const queryMovie = async function (req, res) {
     }
 
     let data = req.query;
-
+ 
     let { title, year } = data;
 
     // noting in query....
@@ -154,7 +154,7 @@ const queryMovie = async function (req, res) {
 
     // if title && year both present in query
 
-    if (title && year) {
+    if (title & year) {
       if (!data.title) {
         return res
           .status(400)
@@ -340,7 +340,7 @@ const deleteMovie = async function (req, res) {
     if (!mongoose.isValidObjectId(userId) || !userId) {
       return res.status(400).send({ status: false, message: " Invalid Entry" });
     }
-
+ 
     const movieId = req.params.movieId;
     if (!movieId) {
       return res
@@ -393,9 +393,9 @@ const deleteMovie = async function (req, res) {
     );
 
     // deleting from watchList
-    await watchListModel.findOneAndDelete({ movies: movieId });
+    await watchListModel.deleteMany({ movies: movieId });
     // deleting review of that movie from db
-    await reviewModel.findOneAndDelete({ movies: movieId });
+    await reviewModel.deleteMany({ movies: movieId });
 
     res.status(200).send({ status: true, message: "deleted successfully" });
   } catch (err) {
