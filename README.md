@@ -129,10 +129,11 @@ yaml
 
 Request format_
 yaml
+```
 {
   paramsId
 }
-
+```
 - Deletes a user by admin id if it's not already deleted and if user is admin deleting all the tthe movies uploadedby him an claer all the watchList reviews and rating given by the user/admin
 - _Response format_
   - *On success* - Return HTTP status 200.
@@ -198,6 +199,7 @@ yaml
 
  _Response format_
 yaml
+```
 {
     "status": true,
     "message": "Movie saved successfully",
@@ -224,16 +226,17 @@ yaml
         "__v": 0
     }]
 }
-
+```
 
 
 ## GET /getFilterMovies (Authentication required)
 Request format_
 yaml
+```
 {
   userId
 }
-
+```
 - Allow an user to fetch details of their profile.
 - Make sure that userId in url param and in token is same
 
@@ -241,10 +244,12 @@ yaml
 ### GET /getById/:movieId
 Request format_
 yaml
+```
 {
   movieId should be in params
 
 }
+```
 
 - Check if the moviesId/userId exists (must have isDeleted false and is present in collection). If it doesn't, return an HTTP status 404
 
@@ -252,11 +257,12 @@ yaml
 ### DELETE /movies/:movieId
 Request format_
 yaml
+```
 {
   movieId
 
 }
-
+```
 - Deletes a movie by movieId if it's not already deleted
 - _Response format_
   - *On success* - Return HTTP status 200.
@@ -270,6 +276,7 @@ yaml
 ### watchList Models
 - watchList
 yaml
+```
 {
 
  userID: {
@@ -284,7 +291,7 @@ yaml
 
 }
 
-
+```
 
 
 
@@ -293,14 +300,17 @@ yaml
 - add to watchList
 
 Request format_
+```
 {
   
   movieId
 
 }
-
+```
 - _Response format_
+
 yaml
+```
 {
 "_id":"9435bd6d7f9fcbb0d1ff9270"
 
@@ -309,39 +319,43 @@ yaml
 
 
 }
-
+```
 ### GET API - /getWatchList
 
 Request format_
+```
 {
   userId from token
 
 }
-
+```
 
 ### delete API - /deleteMovieWatchList/:movieId"
 
 - user/ admin can remove any selected movie from the watchList
 - Check if the movie exists (must have isDeleted false and is present in collection). If it doesn't, return an HTTP status 404
 Request format_
+```
 {
   movieId
 }
-
+```
 
 ### clear wattchList
 
 ### DELETE /clearAllWatchList
 Request format_
+```
 {
   user/admin id token 
 
 }
-
+```
 
 
 ### Successful Response structure
 yaml
+```
 {
   status: true,
   message: 'Success',
@@ -350,14 +364,15 @@ yaml
 
   }
 }
-
+```
 ### Error Response structure
 yaml
+```
 {
   status: false,
   message: ""
 }
-
+```
 //....  Reviews remains ..... //
 
 
