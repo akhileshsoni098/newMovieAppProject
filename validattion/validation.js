@@ -16,6 +16,7 @@ const validatePassword = (password) => {
   //8-15 characters, one lowercase letter and one number and maybe one UpperCase & special character:
   return /^(?=.*[a-z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,15}$/.test(password);
 };
+//title 
 
 const validateTitle = (title) => {
   return /^([a-zA-Z\d ]){2,30}$/.test(title);

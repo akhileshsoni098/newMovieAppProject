@@ -7,11 +7,17 @@ const reviewContro = require("../../controllers/revieweController");
 
 const auth = require("../../middi/auth");
 
+
+//=================================== for frontend ===============================
+
+router.get("/api/auth", auth.authentication,  UserController.getUser)
+
+
 //=====================================*****user registration to deletion***** ====================
 // ======================== to register as a user or admin ========================================
 router.post("/registration", UserController.userData);
 //===================== log in user/admin =========================================================
-router.post("/logInUser", UserController.logIn);
+router.post("/logIn", UserController.logIn);
 // ======================user/admin can see his profile ===========================================
 router.get("/getUser", auth.authentication, UserController.userDetails);
 //=================== user/admin can update in his profile ========================================

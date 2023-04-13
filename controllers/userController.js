@@ -479,4 +479,21 @@ const deleteUser = async function (req, res) {
   res.status(200).send({ status: true, message: "Deleted successfully" });
 };
 
-module.exports = { userData, logIn, userDetails, updateUser, deleteUser };
+
+//========== for frontend ===========================
+
+  const  getUser = async function(req, res) {
+  try {
+     userId = req.userId
+    console.log(userId)
+    const userData = await userModel.findOne({_id:userId}).select("-password");
+    console.log(userData)
+    return res.status(200).send({status:true,msg:"Success",data:userData})
+  }
+  catch (err) {
+    return res.status(500).send({ status: false, msg: err.message})
+}
+}
+
+
+module.exports = { userData, logIn, userDetails, updateUser, deleteUser, getUser };

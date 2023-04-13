@@ -22,6 +22,7 @@ const authentication = async (req, res, next) => {
 
         let checkUser = await userModel.findById(req.userId)
 if(checkUser.isDeleted == true){return res.status(400).send({status:false , message:"user does not exist"})}
+
         next();
       }
     });
