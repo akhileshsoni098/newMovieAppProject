@@ -18,6 +18,7 @@
 ### Models
 - User/Admin Model
 yaml
+```
 {
   fname: {String, mandatory},
   lname: {String, mandatory},
@@ -27,7 +28,7 @@ yaml
   createdAt: {timestamp},
   updatedAt: {timestamp}
 }
-
+```
 
 ## User/Admin APIs
 
@@ -46,6 +47,7 @@ yaml
   - *On success* - Return HTTP status 201.
   - *On error* - Return a suitable error message with a valid HTTP status code.
 yaml
+```
 {
     "status": true,
     "message": "Admin created successfully",
@@ -61,7 +63,7 @@ yaml
         "__v": 0
     }
 }
-
+```
 
 
 ### POST /login
@@ -80,13 +82,14 @@ yaml
   - *On success* - Return HTTP status 200 and JWT token in response body.
   - *On error* - Return a suitable error message with a valid HTTP status code.
 yaml
+```
 {
     "status": true,
     "message": "login successfully",
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MTYyODc2YWJkY2I3MGFmZWVhZjljZjUiLCJpYXQiOjE2MzM4NDczNzYsImV4cCI6MTYzMzg4MzM3Nn0.PgcBPLLg4J01Hyin-zR6BCk7JHBY-RpuWMG_oIK7aV8"
     
 }
-
+```
 
 
 ## GET /getUser (Authentication required)
@@ -102,20 +105,22 @@ yaml
   - *On success* - Return HTTP status 200 and returns the user document.
   - *On error* - Return a suitable error message with a valid HTTP status code.
 yaml
+```
 {
     "status": true,
     "message": "all details",
     "data": {}
 }
-
+```
 ### PUT /updateUser
 
 _Request format_
 yaml
+```
 {
    fname, lname, email, password
 }
-
+```
 - Updates a User/admin data by changing at least one or all fields
 - Check if the adminId exists (must have isDeleted false and is present in collection). If it doesn't, return an HTTP status 404
 
@@ -124,10 +129,11 @@ yaml
 
 Request format_
 yaml
+```
 {
   paramsId
 }
-
+```
 - Deletes a user by admin id if it's not already deleted and if user is admin deleting all the tthe movies uploadedby him an claer all the watchList reviews and rating given by the user/admin
 - _Response format_
   - *On success* - Return HTTP status 200.
@@ -140,7 +146,7 @@ yaml
 ### movies model
 - only admin can upload the movies
 # use Api key to store the movie in db search by title
-
+```
 {
   title: {String,mandatory},
   year: {String},
@@ -151,22 +157,24 @@ yaml
   timestamps
 
 }
-
+```
 
 ## movie APIs
 ### POST /saveMovie
 
 Request format_
+```
 yaml
 {
 
 "title":"movie name"
 
 }
-
+```
 - _Response format_
   
 yaml
+```
 {
    "status": true,
     "message": "Movie saved successfully",
@@ -182,7 +190,7 @@ yaml
         "__v": 0
     }
 }
-
+```
 ### get /getAllMovies
 
 Request format_
@@ -191,6 +199,7 @@ yaml
 
  _Response format_
 yaml
+```
 {
     "status": true,
     "message": "Movie saved successfully",
@@ -217,16 +226,17 @@ yaml
         "__v": 0
     }]
 }
-
+```
 
 
 ## GET /getFilterMovies (Authentication required)
 Request format_
 yaml
+```
 {
   userId
 }
-
+```
 - Allow an user to fetch details of their profile.
 - Make sure that userId in url param and in token is same
 
@@ -234,10 +244,12 @@ yaml
 ### GET /getById/:movieId
 Request format_
 yaml
+```
 {
   movieId should be in params
 
 }
+```
 
 - Check if the moviesId/userId exists (must have isDeleted false and is present in collection). If it doesn't, return an HTTP status 404
 
@@ -245,11 +257,12 @@ yaml
 ### DELETE /movies/:movieId
 Request format_
 yaml
+```
 {
   movieId
 
 }
-
+```
 - Deletes a movie by movieId if it's not already deleted
 - _Response format_
   - *On success* - Return HTTP status 200.
@@ -263,6 +276,7 @@ yaml
 ### watchList Models
 - watchList
 yaml
+```
 {
 
  userID: {
@@ -277,7 +291,7 @@ yaml
 
 }
 
-
+```
 
 
 
@@ -286,14 +300,17 @@ yaml
 - add to watchList
 
 Request format_
+```
 {
   
   movieId
 
 }
-
+```
 - _Response format_
+
 yaml
+```
 {
 "_id":"9435bd6d7f9fcbb0d1ff9270"
 
@@ -302,39 +319,43 @@ yaml
 
 
 }
-
+```
 ### GET API - /getWatchList
 
 Request format_
+```
 {
   userId from token
 
 }
-
+```
 
 ### delete API - /deleteMovieWatchList/:movieId"
 
 - user/ admin can remove any selected movie from the watchList
 - Check if the movie exists (must have isDeleted false and is present in collection). If it doesn't, return an HTTP status 404
 Request format_
+```
 {
   movieId
 }
-
+```
 
 ### clear wattchList
 
 ### DELETE /clearAllWatchList
 Request format_
+```
 {
   user/admin id token 
 
 }
-
+```
 
 
 ### Successful Response structure
 yaml
+```
 {
   status: true,
   message: 'Success',
@@ -343,14 +364,15 @@ yaml
 
   }
 }
-
+```
 ### Error Response structure
 yaml
+```
 {
   status: false,
   message: ""
 }
-
+```
 //....  Reviews remains ..... //
 
 
