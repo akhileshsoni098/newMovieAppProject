@@ -2,20 +2,19 @@ const jwt = require("jsonwebtoken");
 const userModel = require("../models/userModel")
 const authentication = async (req, res, next) => {
   try {
-    let token = req.headers["authorization"];
+    let token = req.headers["x-auth-token"];
 
     if (!token) {
       return res
         .status(400)
         .send({ status: false, message: "Token not present" });
     }
-
-    token = token.split(" ");
-
     // console.log(token[1])
 
-    jwt.verify(token[1], "SecreateKey", async function (err, decoded) {
+    jwt.verify(token, "SecreateKey", async function (err, decoded) {
+    
       if (err)
+     
         return res.status(401).send({ status: false, message: err.message });
       else {
         req.userId = decoded.userId;
@@ -23,7 +22,7 @@ const authentication = async (req, res, next) => {
         let checkUser = await userModel.findById(req.userId)
 if(checkUser.isDeleted == true){return res.status(400).send({status:false , message:"user does not exist"})}
 
-        next();
+        next(); 
       }
     });
   } catch (error) {
@@ -31,4 +30,4 @@ if(checkUser.isDeleted == true){return res.status(400).send({status:false , mess
   }
 };
 
-module.exports = { authentication };
+module.exports = { authentication }; 

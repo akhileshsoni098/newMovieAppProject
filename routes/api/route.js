@@ -10,7 +10,7 @@ const auth = require("../../middi/auth");
 
 //=================================== for frontend ===============================
 
-router.get("/api/auth", auth.authentication,  UserController.getUser)
+router.get("/api/auth", auth.authentication,  UserController.getUser) 
 
 
 //=====================================*****user registration to deletion***** ====================
