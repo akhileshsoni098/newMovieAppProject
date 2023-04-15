@@ -16,14 +16,15 @@ const addToWatchList = async function (req, res) {
       return res.status(400).send({ status: false, message: " Invalid Entry" });
     }
 
-    let movieId = req.params.movieId;
+    let   movieId = req.body.movieId;
+    console.log(movieId)
     if (!movieId) {
       return res
         .status(401)
         .send({ status: false, message: " invalid movie Access " });
     }
     if (!mongoose.isValidObjectId(movieId) || !movieId) {
-      return res.status(400).send({ status: false, message: " Invalid Entry" });
+      return res.status(400).send({ status: false, message: "Invalid Entry" });
     }
 
     const checkMovie = await movieModel.findOne({
@@ -92,6 +93,7 @@ const watchlistDetails = async function (req, res) {
 const delParticular = async function (req, res) {
   try {
     let userId = req.userId;
+    console.log("avbhugghhjhkh")
     if (!userId) {
       return res.status(401).send({ status: false, message: " log in again " });
     }
@@ -99,7 +101,7 @@ const delParticular = async function (req, res) {
       return res.status(400).send({ status: false, message: " Invalid Entry" });
     }
 
-    let movieId = req.params.movieId;
+    let movieId = req.body.movieId;
     if (!movieId) {
       return res
         .status(401)
@@ -113,6 +115,7 @@ const delParticular = async function (req, res) {
       movies: movieId,
       userID: userId,
     });
+    console.log(check)
     if (!check) {
       return res
         .status(404)
@@ -121,7 +124,7 @@ const delParticular = async function (req, res) {
           message: " this movie is not present in your watchList ",
         });
     }
-
+console.log(movieId)
     await watchListModel.findOneAndDelete({ movies: movieId, userID: userId });
 
     res
@@ -134,6 +137,9 @@ const delParticular = async function (req, res) {
     return res.status(500).send({ status: false, message: err.message });
   }
 };
+
+
+
 
 //===================================== clear all watchList =====================================
 

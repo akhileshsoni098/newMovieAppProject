@@ -485,9 +485,9 @@ const deleteUser = async function (req, res) {
   const  getUser = async function(req, res) {
   try {
      userId = req.userId
-    console.log(userId)
+    // console.log(userId)
     const userData = await userModel.findOne({_id:userId}).select("-password");
-    console.log(userData)
+    // console.log(userData)
     return res.status(200).send({status:true,msg:"Success",data:userData})
   }
   catch (err) {

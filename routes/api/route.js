@@ -50,7 +50,7 @@ router.delete(
 //==============*****add to watchList to delte from watchList*****=================================
 // ========================user/admin can add movie in the watchList ==============================
 router.post(
-  "/addWatchList/:movieId",
+  "/addWatchList",
   auth.authentication,
   watchlistContro.addToWatchList 
 );
@@ -62,19 +62,19 @@ router.get(
 );
 //================ user/ admin can remove any selected movie from the watchList ===================
 router.delete(
-  "/deleteMovieWatchList/:movieId",
-  auth.authentication,
+  "/deleteMovieWatchList", 
+  auth.authentication, 
   watchlistContro.delParticular
 );
 // ========================user/admin can clear his watchList======================================
 router.delete(
   "/clearAllWatchList",
   auth.authentication,
-  watchlistContro.clearWatchList
+  watchlistContro.clearWatchList 
 );
 //====================*****review creation to deletion*****========================================
 //====================== user/admin can review and rate any selected movie ========================
-router.post("/review/:movieId", auth.authentication, reviewContro.reviewdata);
+router.post("/review", auth.authentication, reviewContro.reviewdata);
 //================= user/ admin can get his reviews of any particular movie =======================
 router.get(
   "/getParticular/:movieId",

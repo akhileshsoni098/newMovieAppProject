@@ -20,7 +20,7 @@ try{
       return res.status(400).send({ status: false, message: " Invalid Entry" });
     }
 
-     let movieId = req.params.movieId
+     let movieId = req.body.movieId
      if (!movieId) {
       return res.status(401).send({ status: false, message: " invalid movie Access " });
     }
