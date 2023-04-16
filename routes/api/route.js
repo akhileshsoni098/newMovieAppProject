@@ -12,29 +12,42 @@ const auth = require("../../middi/auth");
 
 router.get("/api/auth", auth.authentication,  UserController.getUser) 
 
-
 //=====================================*****user registration to deletion***** ====================
 // ======================== to register as a user or admin ========================================
 router.post("/registration", UserController.userData);
-//===================== log in user/admin =========================================================
+
+//===================== log in user/admin ========================================================= 
+
 router.post("/logIn", UserController.logIn);
+
 // ======================user/admin can see his profile ===========================================
-router.get("/getUser", auth.authentication, UserController.userDetails);
+
+router.get("/getUser", auth.authentication, UserController.userDetails); 
+
 //=================== user/admin can update in his profile ========================================
+
 router.put("/updateUser", auth.authentication, UserController.updateUser);
+
 //================= user/admin can delete his profile =============================================
-router.delete("/deleteUser", auth.authentication, UserController.deleteUser);
+
+router.delete("/deleteUser", auth.authentication, UserController.deleteUser); 
 
 //==========================*****movie upload to delete*****=======================================
 
 // =================== only admin can upload movies ===============================================
+
 router.post("/saveMovie", auth.authentication, movieController.saveMovie);
 
 // ====================== user/admin can get all the movies =======================================
+
 router.get("/getAllMovies", auth.authentication, movieController.getMovie);
+
 // ========================= user/admin can use some filter to serach the movies ==================
+
 router.get("/getFilterMovies", auth.authentication, movieController.queryMovie);
+
 //================== user can get the movie on movie by movie id  =================================
+
 router.get(
   "/getById/:movieId",
   auth.authentication,
