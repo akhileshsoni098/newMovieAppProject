@@ -30,7 +30,7 @@ try{
 
     let data = req.body
 
-let {review, rating, userID, movies} = data
+let {review, rating, userID, movies} = data 
 
 
 //======================= review validation ==========
@@ -110,7 +110,7 @@ try{
       return res.status(400).send({ status: false, message: " Invalid Entry" });
     }
 
-     let movieId = req.params.movieId
+     let movieId = req.body.movieId
      if (!movieId) {
       return res.status(401).send({ status: false, message: " invalid movie Access " });
     }
@@ -182,7 +182,7 @@ const updateReview = async function(req, res){
       return res.status(400).send({ status: false, message: " Invalid Entry" });
     }
 
-     let movieId = req.params.movieId
+     let movieId = req.body.movieId
      if (!movieId) {
       return res.status(401).send({ status: false, message: " invalid movie Access " });
     }
@@ -266,7 +266,7 @@ try{
       return res.status(400).send({ status: false, message: " Invalid Entry" });
     }
 
-     let movieId = req.params.movieId
+     let movieId = req.body.movieId
      if (!movieId) {
       return res.status(401).send({ status: false, message: " invalid movie Access " });
     }

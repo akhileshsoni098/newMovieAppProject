@@ -49,14 +49,14 @@ router.get("/getFilterMovies", auth.authentication, movieController.queryMovie);
 //================== user can get the movie on movie by movie id  =================================
 
 router.get(
-  "/getById/:movieId",
+  "/getById",
   auth.authentication,
   movieController.getMovieById
 );
 
 //============================== only that  admin can delete the movie who uploaded the movie =====
 router.delete(
-  "/deleteMovie/:movieId",
+  "/deleteMovie",
   auth.authentication,
   movieController.deleteMovie
 );
@@ -90,20 +90,20 @@ router.delete(
 router.post("/review", auth.authentication, reviewContro.reviewdata);
 //================= user/ admin can get his reviews of any particular movie =======================
 router.get(
-  "/getParticular/:movieId",
+  "/getParticular",
   auth.authentication,
   reviewContro.getParticular
 );
 //================= user/ admin can get all his reviews of all movie  =============================
 router.get("/getAllReview", auth.authentication, reviewContro.getAllReviews);
 router.put(
-  "/reviewUpdate/:movieId",
+  "/reviewUpdate",
   auth.authentication,
   reviewContro.updateReview
 );
 //====================== user/admin can delete any particular reviews of any particular movie======
 router.delete(
-  "/particularReviewDelete/:movieId",
+  "/particularReviewDelete",
   auth.authentication,
   reviewContro.DeleteParticular
 );

@@ -296,8 +296,8 @@ const getMovieById = async function (req, res) {
       return res.status(400).send({ status: false, message: " Invalid Entry" });
     }
 
-    const movieId = req.params.movieId;
-
+    let movieId = req.body.movieId;
+console.log(movieId)
     if (!movieId) {
       return res
         .status(401)
@@ -341,7 +341,7 @@ const deleteMovie = async function (req, res) {
       return res.status(400).send({ status: false, message: " Invalid Entry" });
     }
  
-    const movieId = req.params.movieId;
+    const movieId = req.body.movieId;
     if (!movieId) {
       return res
         .status(401)
